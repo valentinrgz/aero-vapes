@@ -359,10 +359,25 @@
     }
     document.addEventListener('keydown', trapFocus);
 
-    var ok=false;
-    try{ ok = sessionStorage.getItem(KEY)==='1'; }catch(e){}
-    if(ok){ gate.hidden=true; site.style.display='block'; }
-    else { yesBtn.focus(); }
+    function applyGateState(){
+      var ok=false;
+      try{ ok = sessionStorage.getItem(KEY)==='1'; }catch(e){}
+      if(ok){
+        gate.hidden=true; blocked.hidden=true; site.style.display='block';
+      } else {
+        gate.hidden=false; blocked.hidden=true; site.style.display='none';
+        yesBtn.focus();
+      }
+    }
+    applyGateState();
+
+    // A bfcache restore (hitting "back" after "No" sent you elsewhere) skips
+    // this script entirely, so the page can reappear frozen in whatever
+    // state it was in when you left. Re-apply the real state whenever that
+    // happens instead of trusting the restored DOM.
+    window.addEventListener('pageshow', function(e){
+      if(e.persisted){ applyGateState(); }
+    });
 
     yesBtn.addEventListener('click', function(){
       try{ sessionStorage.setItem(KEY,'1'); }catch(e){}
