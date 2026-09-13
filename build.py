@@ -39,7 +39,7 @@ PRODUCTS = [
     {"id": "ice-king-40k", "name": "Ice King 40k", "price": 27500, "flavors": [
         {"name": "Blueberry Ice", "stock": 2, "img": data_uri("Ice_King_40k_Blueberry_Ice_.jpg")},
         {"name": "Green Apple Ice", "stock": 2, "img": data_uri("Ice_King_40k_Green_Apple_Ice_.jpg")},
-        {"name": "Strawberry Ice", "stock": 2, "img": data_uri("Ice_King_40k_Strawberry_Ice_.jpg")},
+        {"name": "Strawberry Ice", "stock": 1, "img": data_uri("Ice_King_40k_Strawberry_Ice_.jpg")},
         {"name": "Watermelon Ice", "stock": 2, "img": data_uri("Ice_King_40k_Watermelon_Ice_.jpg")},
     ]},
     {"id": "trio-40k", "name": "Trio 40k", "price": 26500, "flavors": [
