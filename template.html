@@ -1,0 +1,740 @@
+<!doctype html>
+<title>Aero Vapes</title>
+<style>
+  :root{
+    --bg:#3F194D; --surface:#68097E; --surface-2:rgba(255,255,255,.06); --line:rgba(255,255,255,.14);
+    --text:#FFFFFF; --text-dim:#C9B8D6;
+    --gold:#FFCA06; --gold-ink:#3F194D;
+    --pink:#C91C7A; --coral:#E8675C; --coral-ink:#1B0A20;
+    --danger:#E8675C;
+    color-scheme: dark;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--text);font-family:'Manrope',ui-sans-serif,system-ui,sans-serif;-webkit-font-smoothing:antialiased;}
+  h1,h2,h3{margin:0;letter-spacing:-0.01em;}
+  .display{font-family:'Bebas Neue',ui-sans-serif,system-ui,sans-serif;letter-spacing:.01em;line-height:.95;text-transform:uppercase;}
+  h1{font-size:2.9rem;line-height:.95;}
+  h2{font-size:2rem;letter-spacing:0;}
+  @media (min-width:768px){ h1{font-size:4.6rem} h2{font-size:2.5rem} }
+  p{margin:0;}
+  a{color:inherit;}
+  .mono{font-family:'JetBrains Mono',ui-monospace,monospace;}
+  .wrap{max-width:1280px;margin:0 auto;padding-inline:20px;}
+  @media (min-width:768px){ .wrap{padding-inline:32px} }
+  button{font:inherit;color:inherit;background:none;border:none;cursor:pointer;}
+  input{font:inherit;color:var(--text);}
+  ::selection{background:var(--gold);color:var(--gold-ink);}
+  .focus-ring:focus-visible{outline:2px solid var(--gold);outline-offset:2px;border-radius:4px;}
+  .btn-primary{border-radius:999px;background:var(--gold);color:var(--gold-ink);font-weight:800;padding:.9rem 1.8rem;transition:filter .15s, transform .1s;display:inline-flex;align-items:center;justify-content:center;gap:.5rem;}
+  .btn-primary:hover{filter:brightness(1.08)}
+  .btn-primary:active{transform:scale(.98)}
+  .btn-primary:disabled{opacity:.35;cursor:not-allowed;filter:none;color:var(--gold-ink);}
+  .btn-ghost{border-radius:999px;border:1px solid var(--line);color:var(--text-dim);padding:.85rem 1.6rem;transition:background .15s;}
+  .btn-ghost:hover{background:rgba(255,255,255,.08);color:var(--text);}
+  .reveal{opacity:0;transform:translateY(20px);transition:opacity .6s cubic-bezier(.16,1,.3,1),transform .6s cubic-bezier(.16,1,.3,1);}
+  .reveal.in{opacity:1;transform:translateY(0);}
+  @media (prefers-reduced-motion: reduce){ .reveal{opacity:1!important;transform:none!important;transition:none!important} .blob{animation:none!important} .marquee-track{animation:none!important} }
+  .blob{position:absolute;border-radius:9999px;filter:blur(80px);pointer-events:none;}
+  @keyframes driftA{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(24px,-26px) scale(1.06)}}
+  .blob-a{animation:driftA 11s ease-in-out infinite;}
+  .chip{border:1px solid var(--line);border-radius:10px;padding:.5rem .7rem;font-size:.8rem;text-align:left;transition:border-color .15s, background .15s;background:rgba(255,255,255,.03);}
+  .chip[aria-pressed="true"]{border-color:var(--gold);background:rgba(255,202,6,.1);}
+  .chip:disabled{opacity:.4;cursor:not-allowed;text-decoration:line-through;color:var(--text-dim);}
+  .stepper{display:inline-flex;align-items:center;border:1px solid var(--line);border-radius:999px;overflow:hidden;background:rgba(255,255,255,.04);}
+  .stepper button{width:2.3rem;height:2.3rem;font-size:1.2rem;font-weight:700;}
+  .stepper button:hover{background:rgba(255,255,255,.08);}
+  .stepper button:disabled{opacity:.3;cursor:not-allowed;}
+  .stepper span{min-width:1.8rem;text-align:center;font-weight:700;}
+  .card{background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:1.1rem;display:flex;flex-direction:column;position:relative;}
+  .card.is-out{opacity:.5;}
+  .card img{width:100%;aspect-ratio:1/1;object-fit:cover;border-radius:14px;background:rgba(0,0,0,.2);}
+  .badge{position:absolute;top:.8rem;left:.8rem;font-size:.68rem;font-weight:800;padding:.3rem .6rem;border-radius:999px;z-index:1;text-transform:uppercase;letter-spacing:.02em;}
+  .badge-urgent{background:var(--coral);color:var(--coral-ink);}
+  .badge-out{background:rgba(255,255,255,.14);color:var(--text-dim);}
+  .scrollbar-none::-webkit-scrollbar{display:none;}
+  .scrollbar-none{-ms-overflow-style:none;scrollbar-width:none;}
+  .marquee{overflow:hidden;white-space:nowrap;border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:rgba(0,0,0,.15);padding-left:16px;padding-right:16px;}
+  .marquee-track{display:inline-block;padding-top:.6rem;padding-bottom:.6rem;animation:marquee 22s linear infinite;}
+  .marquee-track span{display:inline-block;padding-inline:1.2rem;font-size:.78rem;font-weight:700;letter-spacing:.04em;color:var(--text-dim);text-transform:uppercase;}
+  @keyframes marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+  details.faq{border-bottom:1px solid var(--line);padding-top:1rem;padding-bottom:1rem;}
+  details.faq summary{cursor:pointer;font-weight:700;list-style:none;display:flex;align-items:center;justify-content:space-between;gap:1rem;}
+  details.faq summary::-webkit-details-marker{display:none;}
+  details.faq summary .chev{transition:transform .2s;flex-shrink:0;}
+  details.faq[open] summary .chev{transform:rotate(180deg);}
+  details.faq p{margin-top:.7rem;color:var(--text-dim);font-size:.9rem;line-height:1.6;max-width:65ch;}
+  .search-input{width:100%;background:rgba(255,255,255,.05);border:1px solid var(--line);border-radius:999px;padding:.85rem 1.2rem;color:var(--text);}
+  .search-input::placeholder{color:var(--text-dim);}
+  .logo-lg svg{width:76px;height:76px;display:block;}
+</style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Bebas+Neue&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<div id="page-root" style="background:var(--bg);color:var(--text);min-height:100dvh;">
+
+<noscript>
+  <div style="position:fixed;inset:0;z-index:9999;background:#20101f;display:flex;align-items:center;justify-content:center;padding:24px;text-align:center;color:#C9B8D6;">
+    Este sitio necesita JavaScript para verificar tu edad y funcionar. Activalo y recargá la página.
+  </div>
+</noscript>
+
+<!-- LOGO (reused) -->
+<template id="logoTemplate">
+  <svg viewBox="0 0 40 40" width="34" height="34" aria-hidden="true">
+    <defs>
+      <linearGradient id="logoGrad" x1="0" y1="1" x2="1" y2="0">
+        <stop offset="0%" stop-color="#3F194D"/>
+        <stop offset="28%" stop-color="#68097E"/>
+        <stop offset="58%" stop-color="#C91C7A"/>
+        <stop offset="82%" stop-color="#E8675C"/>
+        <stop offset="100%" stop-color="#FFCA06"/>
+      </linearGradient>
+    </defs>
+    <circle cx="20" cy="20" r="19" fill="url(#logoGrad)" stroke="rgba(255,255,255,.25)"/>
+    <path d="M20 8 L29 24 L20 20 L11 24 Z" fill="#fff"/>
+    <path d="M20 20 L20 32" stroke="#fff" stroke-width="2" stroke-linecap="round"/>
+  </svg>
+</template>
+
+<!-- AGE GATE -->
+<div id="ageGate" role="dialog" aria-modal="true" aria-labelledby="ageGateTitle" style="position:fixed;inset:0;z-index:80;display:flex;align-items:center;justify-content:center;background:rgba(10,4,12,.96);backdrop-filter:blur(10px);padding:16px;">
+  <div style="width:100%;max-width:380px;border:1px solid var(--line);background:var(--surface);border-radius:20px;padding:2rem;text-align:center;">
+    <div style="margin:0 auto 1.2rem;width:44px;height:44px;border-radius:999px;background:rgba(255,202,6,.14);display:flex;align-items:center;justify-content:center;">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="2"><path d="M12 9v4M12 17h.01M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z"/></svg>
+    </div>
+    <h2 id="ageGateTitle" style="font-size:1.15rem;font-weight:700;margin-bottom:.5rem;color:var(--text);">¿Sos mayor de 18 años?</h2>
+    <p style="font-size:.9rem;color:var(--text-dim);line-height:1.5;margin-bottom:1.5rem;">Este sitio vende productos para mayores de edad.</p>
+    <div style="display:flex;flex-direction:column;gap:.7rem;">
+      <button id="ageYes" class="focus-ring btn-primary" style="justify-content:center;">Sí, soy mayor</button>
+      <button id="ageNo" class="focus-ring btn-ghost">No, soy menor</button>
+    </div>
+  </div>
+</div>
+<div id="ageBlocked" hidden role="alert" style="position:fixed;inset:0;z-index:80;display:flex;align-items:center;justify-content:center;background:#20101f;padding:16px;text-align:center;">
+  <div style="max-width:340px;">
+    <p style="color:var(--text-dim);line-height:1.5;">Este sitio es solo para mayores de 18 años. Volvé cuando cumplas la edad mínima.</p>
+    <a href="https://www.google.com" class="focus-ring btn-ghost" style="display:inline-block;margin-top:1.2rem;">Salir del sitio</a>
+  </div>
+</div>
+
+<div id="site" style="display:none;">
+
+  <!-- NAV -->
+  <header style="position:sticky;top:0;z-index:40;border-bottom:1px solid var(--line);background:rgba(63,25,77,.88);backdrop-filter:blur(10px);">
+    <div class="wrap" style="height:64px;display:flex;align-items:center;justify-content:space-between;">
+      <a href="#top" class="focus-ring" style="display:flex;align-items:center;gap:.6rem;" aria-label="Aero Vapes, inicio">
+        <span data-logo></span>
+        <span class="display" style="font-size:1.3rem;">AERO VAPES</span>
+      </a>
+      <button id="cartBtn" class="focus-ring" aria-label="Ver carrito" style="position:relative;width:2.6rem;height:2.6rem;border-radius:999px;border:1px solid var(--line);display:flex;align-items:center;justify-content:center;">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="9" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2 3h2l2.6 12.4a2 2 0 0 0 2 1.6h8.8a2 2 0 0 0 2-1.6L21 8H6"/></svg>
+        <span id="cartCount" style="position:absolute;top:-4px;right:-4px;min-width:18px;height:18px;border-radius:999px;background:var(--gold);color:var(--gold-ink);font-size:.65rem;font-weight:800;display:flex;align-items:center;justify-content:center;padding:0 4px;">0</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- MARQUEE -->
+  <div class="marquee">
+    <div class="marquee-track">
+      <span>STOCK REAL</span><span>·</span><span>CONFIRMÁS POR WHATSAPP</span><span>·</span><span>AERO VAPES</span><span>·</span>
+      <span>STOCK REAL</span><span>·</span><span>CONFIRMÁS POR WHATSAPP</span><span>·</span><span>AERO VAPES</span><span>·</span>
+    </div>
+  </div>
+
+  <main id="top">
+    <!-- HERO -->
+    <section style="position:relative;overflow:hidden;padding-top:3rem;padding-bottom:3rem;min-height:64dvh;display:flex;align-items:center;">
+      <div class="blob blob-a" style="width:420px;height:420px;background:rgba(201,28,122,.35);top:-10%;right:-15%;"></div>
+      <div class="blob" style="width:340px;height:340px;background:rgba(255,202,6,.16);bottom:-15%;left:-10%;"></div>
+      <div class="wrap reveal" style="text-align:center;display:flex;flex-direction:column;align-items:center;">
+        <span data-logo class="logo-lg"></span>
+        <span class="display" style="font-size:1.6rem;margin-top:.8rem;color:var(--text-dim);">AERO VAPES</span>
+        <h1 class="display" style="margin-top:1rem;">Los vapes más baratos<br><span style="color:var(--gold);">de Mendoza.</span></h1>
+        <p style="margin-top:1.2rem;max-width:40ch;color:var(--text-dim);line-height:1.6;">Sabores en stock real, coordinamos la entrega y confirmás todo por WhatsApp.</p>
+        <div style="margin-top:1.5rem;display:flex;flex-wrap:wrap;justify-content:center;gap:.6rem;">
+          <span class="chip" style="background:rgba(255,255,255,.05);">💨 Stock real</span>
+          <span class="chip" style="background:rgba(255,255,255,.05);">📦 Coordinamos entrega</span>
+          <span class="chip" style="background:rgba(255,255,255,.05);">💬 Confirmás por WhatsApp</span>
+        </div>
+        <div style="margin-top:1.8rem;">
+          <a href="#catalogo" class="focus-ring btn-primary">Ver catálogo</a>
+        </div>
+        <p style="margin-top:1.1rem;font-size:.75rem;color:var(--text-dim);">Venta exclusiva a mayores de 18 años.</p>
+      </div>
+    </section>
+
+    <!-- CATALOG -->
+    <section id="catalogo" class="wrap" style="padding-top:5rem;padding-bottom:5rem;">
+      <h2 class="reveal">Catálogo</h2>
+      <p class="reveal" style="margin-top:.6rem;color:var(--text-dim);max-width:50ch;">Elegí modelo, sabor y cantidad.</p>
+      <input id="searchInput" type="text" class="search-input focus-ring" placeholder="Buscar por modelo o sabor…" style="margin-top:1.8rem;max-width:420px;" aria-label="Buscar productos">
+      <div id="catalogGrid" style="margin-top:2.5rem;display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:1.25rem;"></div>
+      <p id="noResults" hidden style="margin-top:2rem;color:var(--text-dim);text-align:center;">No encontramos nada con ese nombre.</p>
+    </section>
+
+    <!-- POR QUÉ AERO VAPES -->
+    <section class="wrap" style="padding-top:4rem;padding-bottom:4rem;border-top:1px solid var(--line);">
+      <h2 class="reveal">¿Por qué Aero Vapes?</h2>
+      <div style="margin-top:2.2rem;display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:1.2rem;">
+        <div class="reveal" style="background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:1.4rem;">
+          <div style="font-size:1.8rem;">📦</div>
+          <div style="font-weight:700;margin-top:.6rem;">Stock real</div>
+          <p style="color:var(--text-dim);font-size:.85rem;margin-top:.3rem;line-height:1.5;">Lo que ves en la web es lo que hay. Nada de "sí, hay" y después no.</p>
+        </div>
+        <div class="reveal" style="background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:1.4rem;transition-delay:.05s">
+          <div style="font-size:1.8rem;">🚀</div>
+          <div style="font-weight:700;margin-top:.6rem;">Entrega coordinada</div>
+          <p style="color:var(--text-dim);font-size:.85rem;margin-top:.3rem;line-height:1.5;">Confirmás el pedido y coordinamos el envío o el retiro por WhatsApp.</p>
+        </div>
+        <div class="reveal" style="background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:1.4rem;transition-delay:.1s">
+          <div style="font-size:1.8rem;">💳</div>
+          <div style="font-weight:700;margin-top:.6rem;">Pago fácil</div>
+          <p style="color:var(--text-dim);font-size:.85rem;margin-top:.3rem;line-height:1.5;">Transferencia directa, sin vueltas ni pasarelas complicadas.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- CÓMO FUNCIONA -->
+    <section class="wrap" style="padding-top:4rem;padding-bottom:4rem;border-top:1px solid var(--line);">
+      <h2 class="reveal">Cómo funciona</h2>
+      <div style="margin-top:2.2rem;display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1.5rem;">
+        <div class="reveal">
+          <div class="display" style="font-size:2.4rem;color:var(--gold);">01</div>
+          <div style="font-weight:700;margin-top:.3rem;">Elegí tu sabor</div>
+          <p style="color:var(--text-dim);font-size:.85rem;margin-top:.3rem;line-height:1.5;">Recorré el catálogo y armá tu pedido con lo que hay en stock.</p>
+        </div>
+        <div class="reveal" style="transition-delay:.05s">
+          <div class="display" style="font-size:2.4rem;color:var(--gold);">02</div>
+          <div style="font-weight:700;margin-top:.3rem;">Confirmá por WhatsApp</div>
+          <p style="color:var(--text-dim);font-size:.85rem;margin-top:.3rem;line-height:1.5;">Al finalizar la compra, te abrimos WhatsApp con el pedido ya armado.</p>
+        </div>
+        <div class="reveal" style="transition-delay:.1s">
+          <div class="display" style="font-size:2.4rem;color:var(--gold);">03</div>
+          <div style="font-weight:700;margin-top:.3rem;">Coordinás la entrega</div>
+          <p style="color:var(--text-dim);font-size:.85rem;margin-top:.3rem;line-height:1.5;">Transferís a nuestro alias y coordinamos el envío o el retiro.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="wrap" style="padding-top:4rem;padding-bottom:4rem;border-top:1px solid var(--line);max-width:800px;">
+      <h2 class="reveal">Preguntas frecuentes</h2>
+      <div style="margin-top:1.5rem;">
+        <details class="faq">
+          <summary>¿Cómo hago el pedido?<svg class="chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg></summary>
+          <p>Elegís el modelo y el sabor en el catálogo, lo agregás al carrito y al finalizar te abrimos WhatsApp con el pedido ya armado para confirmar.</p>
+        </details>
+        <details class="faq">
+          <summary>¿Cómo pago?<svg class="chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg></summary>
+          <p>Por transferencia, al alias que te mostramos al finalizar la compra. Guardá el comprobante para coordinar la entrega.</p>
+        </details>
+        <details class="faq">
+          <summary>¿Qué pasa si mi sabor favorito está agotado?<svg class="chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg></summary>
+          <p>El stock que ves en la web es el real. Si un sabor figura agotado, todavía no tenemos. Escribinos por WhatsApp si querés que te avisemos cuando vuelva.</p>
+        </details>
+        <details class="faq">
+          <summary>¿Puedo comprar si soy menor de 18?<svg class="chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg></summary>
+          <p>No. La venta es exclusiva para mayores de 18 años.</p>
+        </details>
+      </div>
+    </section>
+  </main>
+
+  <footer style="border-top:1px solid var(--line);padding-top:3rem;padding-bottom:3rem;">
+    <div class="wrap" style="display:flex;flex-direction:column;align-items:center;gap:.8rem;text-align:center;">
+      <span data-logo></span>
+      <span class="display" style="font-size:1.1rem;">AERO VAPES</span>
+      <p style="font-size:.78rem;color:var(--text-dim);">18+ · Prohibida la venta a menores de edad.</p>
+      <p style="font-size:.7rem;color:var(--text-dim);">© 2026 Aero Vapes.</p>
+    </div>
+  </footer>
+
+</div>
+
+<!-- STICKY BOTTOM CART BAR -->
+<div id="bottomBar" hidden style="position:fixed;left:0;right:0;bottom:0;z-index:60;background:rgba(20,8,20,.94);backdrop-filter:blur(10px);border-top:1px solid var(--line);">
+  <div class="wrap" style="height:64px;display:flex;align-items:center;justify-content:space-between;gap:1rem;">
+    <span style="font-size:.8rem;color:var(--text-dim);display:none;" id="bottomBarHint" class="hint-desktop">💬 Coordinamos por WhatsApp</span>
+    <button id="bottomBarBtn" class="focus-ring" style="display:flex;align-items:center;gap:.8rem;margin-left:auto;">
+      <span id="bottomBarSummary" class="mono" style="font-weight:700;"></span>
+      <span class="btn-primary" style="padding:.6rem 1.3rem;font-size:.85rem;">Ver pedido</span>
+    </button>
+  </div>
+</div>
+
+<!-- CART DRAWER -->
+<div id="cartOverlay" hidden style="position:fixed;inset:0;z-index:70;background:rgba(10,4,12,.65);"></div>
+<aside id="cartDrawer" hidden role="dialog" aria-modal="true" aria-labelledby="cartTitle" style="position:fixed;top:0;right:0;bottom:0;z-index:71;width:100%;max-width:420px;background:var(--surface);border-left:1px solid var(--line);display:flex;flex-direction:column;">
+  <div style="padding:1.2rem 1.4rem;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;">
+    <h3 id="cartTitle" style="font-size:1.05rem;font-weight:700;color:var(--text);">Tu carrito</h3>
+    <button id="cartClose" class="focus-ring" aria-label="Cerrar carrito" style="width:2rem;height:2rem;display:flex;align-items:center;justify-content:center;">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg>
+    </button>
+  </div>
+
+  <div id="cartView" style="flex:1;overflow-y:auto;padding:1.2rem 1.4rem;">
+    <div id="cartEmpty" style="color:var(--text-dim);font-size:.9rem;padding:2rem 0;text-align:center;">Todavía no agregaste nada.</div>
+    <div id="cartItems" style="display:flex;flex-direction:column;gap:1rem;"></div>
+  </div>
+
+  <div id="cartFooter" hidden style="border-top:1px solid var(--line);padding:1.2rem 1.4rem;display:flex;flex-direction:column;gap:.9rem;">
+    <div style="display:flex;justify-content:space-between;font-weight:700;">
+      <span>Subtotal</span>
+      <span id="cartSubtotal" class="mono"></span>
+    </div>
+    <button id="goCheckout" class="focus-ring btn-primary" style="justify-content:center;">Finalizar compra</button>
+  </div>
+
+  <!-- CHECKOUT VIEW -->
+  <div id="checkoutView" hidden style="flex:1;overflow-y:auto;padding:1.2rem 1.4rem;display:flex;flex-direction:column;gap:1.2rem;">
+    <button id="backToCart" class="focus-ring" style="align-self:flex-start;color:var(--text-dim);font-size:.85rem;display:flex;align-items:center;gap:.35rem;">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>
+      Volver al carrito
+    </button>
+    <div>
+      <h3 style="font-size:1rem;font-weight:700;margin-bottom:.8rem;color:var(--text);">Resumen del pedido</h3>
+      <div id="checkoutItems" style="display:flex;flex-direction:column;gap:.5rem;font-size:.85rem;color:var(--text-dim);"></div>
+      <div style="display:flex;justify-content:space-between;font-weight:700;margin-top:.8rem;padding-top:.8rem;border-top:1px solid var(--line);">
+        <span>Total</span>
+        <span id="checkoutTotal" class="mono"></span>
+      </div>
+    </div>
+    <div style="border-radius:16px;border:1px solid var(--gold);background:rgba(255,202,6,.08);padding:1rem;">
+      <p style="font-size:.8rem;color:var(--text-dim);">Transferí el total a este alias</p>
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:.6rem;margin-top:.4rem;">
+        <span class="mono" style="font-size:1.05rem;font-weight:700;">AEROVAPES.COM</span>
+        <button id="copyAlias" class="focus-ring btn-ghost" style="padding:.4rem .8rem;font-size:.75rem;">Copiar</button>
+      </div>
+    </div>
+    <a id="confirmOrder" href="#" target="_blank" rel="noopener" class="focus-ring btn-primary" style="justify-content:center;gap:.6rem;text-decoration:none;">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.28-1.38a9.9 9.9 0 0 0 4.76 1.21h.01c5.46 0 9.9-4.45 9.9-9.91C21.96 6.45 17.5 2 12.04 2Zm5.8 14.02c-.24.68-1.4 1.3-1.94 1.38-.5.08-1.12.11-1.82-.11-.42-.13-.96-.31-1.65-.6-2.9-1.25-4.8-4.17-4.94-4.36-.14-.19-1.18-1.57-1.18-3 0-1.43.75-2.13 1.02-2.42.27-.29.58-.36.78-.36.19 0 .39 0 .56.01.18.01.42-.07.65.5.24.58.82 2 .89 2.15.07.15.12.32.02.51-.1.19-.15.31-.3.48-.15.17-.31.38-.44.51-.15.15-.3.31-.13.6.17.29.76 1.25 1.63 2.02 1.12.99 2.06 1.3 2.35 1.45.29.15.46.13.63-.05.17-.18.72-.83.91-1.12.19-.29.38-.24.63-.14.26.1 1.65.78 1.93.92.28.14.47.21.54.33.07.12.07.68-.17 1.36Z"/></svg>
+      Confirmar por WhatsApp
+    </a>
+  </div>
+
+  <!-- THANK YOU VIEW -->
+  <div id="thanksView" hidden style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1rem;padding:2rem;text-align:center;">
+    <div style="width:52px;height:52px;border-radius:999px;background:rgba(255,202,6,.14);display:flex;align-items:center;justify-content:center;">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg>
+    </div>
+    <h3 style="font-size:1.05rem;font-weight:700;color:var(--text);">¡Pedido enviado por WhatsApp!</h3>
+    <p style="font-size:.85rem;color:var(--text-dim);max-width:28ch;">Transferí el total al alias <span class="mono">AEROVAPES.COM</span> y guardá el comprobante para coordinar la entrega.</p>
+    <button id="closeThanks" class="focus-ring btn-ghost">Cerrar</button>
+  </div>
+</aside>
+
+<script id="products-data" type="application/json">__PRODUCTS_JSON__</script>
+
+<script>
+(function(){
+  var PRODUCTS = JSON.parse(document.getElementById('products-data').textContent);
+  var WHATSAPP_NUMBER = '542616661778';
+  var ALIAS = 'AEROVAPES.COM';
+
+  // ---------- LOGO ----------
+  (function(){
+    var tpl = document.getElementById('logoTemplate');
+    document.querySelectorAll('[data-logo]').forEach(function(el){
+      el.appendChild(tpl.content.cloneNode(true));
+    });
+  })();
+
+  // ---------- AGE GATE ----------
+  (function(){
+    var KEY='aero-age-ok';
+    var gate=document.getElementById('ageGate');
+    var blocked=document.getElementById('ageBlocked');
+    var site=document.getElementById('site');
+    var yesBtn=document.getElementById('ageYes');
+    var noBtn=document.getElementById('ageNo');
+
+    function trapFocus(e){
+      if(gate.hidden || e.key!=='Tab') return;
+      var f=[yesBtn, noBtn];
+      var first=f[0], last=f[f.length-1];
+      if(e.shiftKey && document.activeElement===first){ e.preventDefault(); last.focus(); }
+      else if(!e.shiftKey && document.activeElement===last){ e.preventDefault(); first.focus(); }
+    }
+    document.addEventListener('keydown', trapFocus);
+
+    var ok=false;
+    try{ ok = sessionStorage.getItem(KEY)==='1'; }catch(e){}
+    if(ok){ gate.hidden=true; site.style.display='block'; }
+    else { yesBtn.focus(); }
+
+    yesBtn.addEventListener('click', function(){
+      try{ sessionStorage.setItem(KEY,'1'); }catch(e){}
+      gate.hidden=true; site.style.display='block';
+    });
+    noBtn.addEventListener('click', function(){
+      gate.hidden=true; blocked.hidden=false;
+      try{ window.top.location.href='https://www.google.com'; }catch(e){}
+    });
+  })();
+
+  function money(n){ return '$' + n.toLocaleString('es-AR'); }
+
+  // ---------- CART (declared early so card render can read it) ----------
+  var CART_KEY = 'aero-cart';
+  var cart = [];
+  try{ cart = JSON.parse(localStorage.getItem(CART_KEY)) || []; }catch(e){ cart = []; }
+
+  function cartQtyFor(productId, flavorName){
+    var item = cart.find(function(i){ return i.productId===productId && i.flavorName===flavorName; });
+    return item ? item.qty : 0;
+  }
+
+  // ---------- CATALOG STATE ----------
+  var selection = {}; // productId -> flavorIdx
+  PRODUCTS.forEach(function(p){
+    var firstInStock = p.flavors.findIndex(function(f){ return f.stock > 0; });
+    selection[p.id] = firstInStock >= 0 ? firstInStock : 0;
+  });
+  var searchTerm = '';
+
+  function productIsOut(p){ return p.flavors.every(function(f){ return f.stock <= 0; }); }
+
+  function renderCatalog(){
+    var grid = document.getElementById('catalogGrid');
+    grid.innerHTML = '';
+
+    var term = searchTerm.trim().toLowerCase();
+    var visible = PRODUCTS.filter(function(p){
+      if(!term) return true;
+      if(p.name.toLowerCase().indexOf(term) > -1) return true;
+      return p.flavors.some(function(f){ return f.name.toLowerCase().indexOf(term) > -1; });
+    });
+
+    document.getElementById('noResults').hidden = visible.length > 0;
+
+    var sorted = visible.slice().sort(function(a,b){
+      return (productIsOut(a) ? 1 : 0) - (productIsOut(b) ? 1 : 0);
+    });
+
+    sorted.forEach(function(p){
+      var flavorIdx = selection[p.id];
+      var flavor = p.flavors[flavorIdx];
+      var out = productIsOut(p);
+
+      var card = document.createElement('div');
+      card.className = 'card reveal in' + (out ? ' is-out' : '');
+
+      if(out){
+        var badgeOut = document.createElement('span');
+        badgeOut.className = 'badge badge-out';
+        badgeOut.textContent = 'Agotado';
+        card.appendChild(badgeOut);
+      } else if(flavor.stock <= 2){
+        var badgeUrgent = document.createElement('span');
+        badgeUrgent.className = 'badge badge-urgent';
+        badgeUrgent.textContent = '¡Quedan ' + flavor.stock + '!';
+        card.appendChild(badgeUrgent);
+      }
+
+      var img = document.createElement('img');
+      img.src = flavor.img; img.alt = p.name + ' - ' + flavor.name;
+      card.appendChild(img);
+
+      var name = document.createElement('div');
+      name.style.marginTop = '.9rem';
+      name.style.fontWeight = '700';
+      name.textContent = p.name;
+      card.appendChild(name);
+
+      var price = document.createElement('div');
+      price.className = 'mono';
+      price.style.color = 'var(--gold)';
+      price.style.fontWeight = '700';
+      price.style.marginTop = '.2rem';
+      price.textContent = money(p.price);
+      card.appendChild(price);
+
+      if(p.flavors.length > 1){
+        var chips = document.createElement('div');
+        chips.style.display = 'grid';
+        chips.style.gridTemplateColumns = '1fr';
+        chips.style.gap = '.4rem';
+        chips.style.marginTop = '.8rem';
+        p.flavors.forEach(function(f, idx){
+          var chip = document.createElement('button');
+          chip.type = 'button';
+          chip.className = 'chip focus-ring';
+          chip.setAttribute('aria-pressed', String(idx === flavorIdx));
+          chip.disabled = f.stock <= 0;
+          chip.textContent = f.name + (f.stock <= 0 ? ' (agotado)' : (f.stock <= 2 ? ' (¡quedan ' + f.stock + '!)' : ''));
+          chip.addEventListener('click', function(){
+            selection[p.id] = idx;
+            renderCatalog();
+          });
+          chips.appendChild(chip);
+        });
+        card.appendChild(chips);
+      } else if(!out){
+        var stockNote = document.createElement('div');
+        stockNote.style.marginTop = '.6rem';
+        stockNote.style.fontSize = '.78rem';
+        stockNote.style.color = 'var(--text-dim)';
+        stockNote.textContent = flavor.stock <= 2 ? '¡Quedan ' + flavor.stock + '!' : 'En stock';
+        card.appendChild(stockNote);
+      }
+
+      var controls = document.createElement('div');
+      controls.style.marginTop = '1rem';
+      card.appendChild(controls);
+
+      var qtyInCart = cartQtyFor(p.id, flavor.name);
+
+      if(qtyInCart === 0){
+        var addBtn = document.createElement('button');
+        addBtn.type = 'button';
+        addBtn.className = 'focus-ring btn-primary';
+        addBtn.style.width = '100%';
+        addBtn.style.padding = '.7rem 1rem';
+        addBtn.style.fontSize = '.85rem';
+        addBtn.textContent = out ? 'Sin stock' : 'Agregar';
+        addBtn.disabled = flavor.stock <= 0;
+        addBtn.addEventListener('click', function(){
+          addToCart(p, flavor, 1);
+          renderCatalog();
+        });
+        controls.appendChild(addBtn);
+      } else {
+        var stepper = document.createElement('div');
+        stepper.className = 'stepper';
+        stepper.style.width = '100%';
+        stepper.style.justifyContent = 'space-between';
+
+        var minus = document.createElement('button');
+        minus.type = 'button'; minus.textContent = '−'; minus.setAttribute('aria-label','Restar cantidad');
+        minus.style.flex = '1';
+        minus.addEventListener('click', function(){
+          setCartQty(p, flavor, qtyInCart - 1);
+          renderCatalog();
+        });
+
+        var qtyLabel = document.createElement('span');
+        qtyLabel.textContent = qtyInCart;
+        qtyLabel.style.flex = '1';
+
+        var plus = document.createElement('button');
+        plus.type = 'button'; plus.textContent = '+'; plus.setAttribute('aria-label','Sumar cantidad');
+        plus.style.flex = '1';
+        plus.disabled = qtyInCart >= flavor.stock;
+        plus.addEventListener('click', function(){
+          setCartQty(p, flavor, qtyInCart + 1);
+          renderCatalog();
+        });
+
+        stepper.appendChild(minus); stepper.appendChild(qtyLabel); stepper.appendChild(plus);
+        controls.appendChild(stepper);
+      }
+
+      grid.appendChild(card);
+    });
+  }
+
+  document.getElementById('searchInput').addEventListener('input', function(e){
+    searchTerm = e.target.value;
+    renderCatalog();
+  });
+
+  renderCatalog();
+
+  // ---------- CART LOGIC ----------
+  function saveCart(){
+    try{ localStorage.setItem(CART_KEY, JSON.stringify(cart)); }catch(e){}
+    renderCart();
+  }
+
+  function addToCart(product, flavor, qty){
+    var existing = cart.find(function(i){ return i.productId===product.id && i.flavorName===flavor.name; });
+    if(existing){ existing.qty = Math.min(existing.qty + qty, flavor.stock); }
+    else { cart.push({ productId: product.id, name: product.name, flavorName: flavor.name, price: product.price, qty: qty, img: flavor.img }); }
+    saveCart();
+  }
+
+  function setCartQty(product, flavor, qty){
+    var existing = cart.find(function(i){ return i.productId===product.id && i.flavorName===flavor.name; });
+    if(qty <= 0){
+      if(existing){ cart.splice(cart.indexOf(existing), 1); }
+    } else if(existing){
+      existing.qty = Math.min(qty, flavor.stock);
+    } else {
+      cart.push({ productId: product.id, name: product.name, flavorName: flavor.name, price: product.price, qty: Math.min(qty, flavor.stock), img: flavor.img });
+    }
+    saveCart();
+  }
+
+  function cartTotal(){
+    return cart.reduce(function(sum, i){ return sum + i.price * i.qty; }, 0);
+  }
+  function cartCount(){
+    return cart.reduce(function(s,i){ return s+i.qty; }, 0);
+  }
+
+  var bottomBar = document.getElementById('bottomBar');
+  var pageRoot = document.getElementById('page-root');
+
+  function renderCart(){
+    var count = cartCount();
+    document.getElementById('cartCount').textContent = count;
+
+    if(count > 0){
+      bottomBar.hidden = false;
+      document.getElementById('bottomBarSummary').textContent = count + (count===1?' producto · ':' productos · ') + money(cartTotal());
+      pageRoot.style.paddingBottom = '64px';
+    } else {
+      bottomBar.hidden = true;
+      pageRoot.style.paddingBottom = '0px';
+    }
+
+    var itemsEl = document.getElementById('cartItems');
+    var emptyEl = document.getElementById('cartEmpty');
+    var footerEl = document.getElementById('cartFooter');
+    itemsEl.innerHTML = '';
+
+    if(cart.length === 0){
+      emptyEl.style.display = 'block';
+      footerEl.hidden = true;
+      return;
+    }
+    emptyEl.style.display = 'none';
+    footerEl.hidden = false;
+
+    cart.forEach(function(item, idx){
+      var row = document.createElement('div');
+      row.style.display = 'flex';
+      row.style.gap = '.8rem';
+
+      var img = document.createElement('img');
+      img.src = item.img;
+      img.style.width = '56px'; img.style.height = '56px'; img.style.objectFit = 'cover';
+      img.style.borderRadius = '10px';
+      row.appendChild(img);
+
+      var info = document.createElement('div');
+      info.style.flex = '1';
+      info.innerHTML = '<div style="font-weight:700;font-size:.85rem;">' + item.name + '</div>' +
+        '<div style="font-size:.75rem;color:var(--text-dim);">' + item.flavorName + '</div>' +
+        '<div class="mono" style="font-size:.8rem;margin-top:.2rem;">' + money(item.price) + ' × ' + item.qty + '</div>';
+      row.appendChild(info);
+
+      var removeBtn = document.createElement('button');
+      removeBtn.className = 'focus-ring';
+      removeBtn.setAttribute('aria-label','Quitar del carrito');
+      removeBtn.style.color = 'var(--text-dim)';
+      removeBtn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2m3 0-1 14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2L4 6"/></svg>';
+      removeBtn.addEventListener('click', function(){
+        cart.splice(idx, 1);
+        saveCart();
+        renderCatalog();
+      });
+      row.appendChild(removeBtn);
+
+      itemsEl.appendChild(row);
+    });
+
+    document.getElementById('cartSubtotal').textContent = money(cartTotal());
+  }
+  renderCart();
+
+  // ---------- DRAWER / VIEWS ----------
+  var overlay = document.getElementById('cartOverlay');
+  var drawer = document.getElementById('cartDrawer');
+  var cartView = document.getElementById('cartView');
+  var cartFooter = document.getElementById('cartFooter');
+  var checkoutView = document.getElementById('checkoutView');
+  var thanksView = document.getElementById('thanksView');
+
+  function openCart(){
+    overlay.hidden = false; drawer.hidden = false;
+    cartView.style.display = 'block'; cartFooter.hidden = cart.length===0;
+    checkoutView.hidden = true; thanksView.hidden = true;
+  }
+  function closeCart(){ overlay.hidden = true; drawer.hidden = true; }
+
+  document.getElementById('cartBtn').addEventListener('click', openCart);
+  document.getElementById('bottomBarBtn').addEventListener('click', openCart);
+  document.getElementById('cartClose').addEventListener('click', closeCart);
+  overlay.addEventListener('click', closeCart);
+
+  document.getElementById('goCheckout').addEventListener('click', function(){
+    cartView.style.display = 'none'; cartFooter.hidden = true;
+    checkoutView.hidden = false;
+
+    var itemsEl = document.getElementById('checkoutItems');
+    itemsEl.innerHTML = '';
+    cart.forEach(function(item){
+      var row = document.createElement('div');
+      row.style.display = 'flex';
+      row.style.justifyContent = 'space-between';
+      row.innerHTML = '<span>' + item.name + ' - ' + item.flavorName + ' ×' + item.qty + '</span><span class="mono">' + money(item.price*item.qty) + '</span>';
+      itemsEl.appendChild(row);
+    });
+    document.getElementById('checkoutTotal').textContent = money(cartTotal());
+
+    var waUrl = 'https://wa.me/' + WHATSAPP_NUMBER + '?text=' + encodeURIComponent(buildWhatsAppMessage());
+    document.getElementById('confirmOrder').href = waUrl;
+  });
+
+  document.getElementById('backToCart').addEventListener('click', function(){
+    checkoutView.hidden = true;
+    cartView.style.display = 'block'; cartFooter.hidden = cart.length===0;
+  });
+
+  document.getElementById('copyAlias').addEventListener('click', function(){
+    var btn = this;
+    function done(){ btn.textContent = '¡Copiado!'; setTimeout(function(){ btn.textContent = 'Copiar'; }, 1600); }
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(ALIAS).then(done).catch(done);
+    } else { done(); }
+  });
+
+  function buildWhatsAppMessage(){
+    var lines = ['Hola Aero Vapes! Quiero confirmar mi pedido:', ''];
+    cart.forEach(function(item){
+      lines.push('- ' + item.name + ' (' + item.flavorName + ') x' + item.qty + ': ' + money(item.price*item.qty));
+    });
+    lines.push('');
+    lines.push('Total: ' + money(cartTotal()));
+    lines.push('Ya transferi a ' + ALIAS + '. Mi zona de entrega es: ');
+    return lines.join('\n');
+  }
+
+  document.getElementById('confirmOrder').addEventListener('click', function(){
+    // href is already set (in goCheckout) so the browser opens WhatsApp
+    // natively on this click; we just update our own UI state here.
+    checkoutView.hidden = true;
+    thanksView.hidden = false;
+    cart = [];
+    saveCart();
+    renderCatalog();
+  });
+
+  document.getElementById('closeThanks').addEventListener('click', function(){
+    closeCart();
+    thanksView.hidden = true;
+  });
+
+  // ---------- REVEAL ON SCROLL ----------
+  var prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if(!prefersReduced && 'IntersectionObserver' in window){
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+    }, {threshold:0.12});
+    document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
+  } else {
+    document.querySelectorAll('.reveal').forEach(function(el){ el.classList.add('in'); });
+  }
+})();
+</script>
+
+</div>
+
+<style>
+  @media (min-width:768px){
+    .hint-desktop{ display:inline-block !important; }
+  }
+</style>
