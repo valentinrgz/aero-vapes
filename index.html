@@ -718,8 +718,7 @@
       lines.push('- ' + item.name + ' (' + item.flavorName + ') x' + item.qty + ': ' + money(item.price*item.qty));
     });
     lines.push('');
-    lines.push('Total: ' + money(cartTotal()));
-    lines.push('Ya transferi a ' + ALIAS + '. Vine de parte de: ');
+    lines.push('Vine de parte de: ');
     return lines.join('\n');
   }
 
