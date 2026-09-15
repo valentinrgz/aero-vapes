@@ -70,6 +70,12 @@ PRODUCTS = [
 ]
 
 
+def data_uri_abs(path):
+    with open(path, "rb") as f:
+        b64 = base64.b64encode(f.read()).decode("ascii")
+    return "data:image/png;base64," + b64
+
+
 def main():
     base_dir = os.path.dirname(__file__)
     products_json = json.dumps(PRODUCTS, ensure_ascii=False)
@@ -78,6 +84,8 @@ def main():
         html = f.read()
 
     html = html.replace("__PRODUCTS_JSON__", products_json)
+    html = html.replace("__WORDMARK_HERO__", data_uri_abs(os.path.join(base_dir, "brand", "wordmark-hero.png")))
+    html = html.replace("__WORDMARK_NAV__", data_uri_abs(os.path.join(base_dir, "brand", "wordmark-nav.png")))
 
     out_path = os.path.join(base_dir, "index.html")
     with open(out_path, "w", encoding="utf-8") as f:
