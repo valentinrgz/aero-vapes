@@ -717,8 +717,6 @@
     cart.forEach(function(item){
       lines.push('- ' + item.name + ' (' + item.flavorName + ') x' + item.qty + ': ' + money(item.price*item.qty));
     });
-    lines.push('');
-    lines.push('Vine de parte de: ');
     return lines.join('\n');
   }
 
