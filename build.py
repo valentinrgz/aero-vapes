@@ -53,7 +53,7 @@ PRODUCTS = [
     ]},
     {"id": "te-30k", "name": "TE 30K", "price": 25900, "flavors": [
         {"name": "Blueberry Ice", "stock": 2, "img": data_uri("TE_30K_Blueberry_ice_.jpg")},
-        {"name": "Strawberry Watermelon Ice", "stock": 2, "img": data_uri("TE_30K_Strawberry_Watermelon_Ice_.jpg")},
+        {"name": "Strawberry Watermelon Ice", "stock": 1, "img": data_uri("TE_30K_Strawberry_Watermelon_Ice_.jpg")},
         {"name": "Green Apple Ice", "stock": 2, "img": data_uri("TE_30K_Green_Apple_Ice_.jpg")},
     ]},
     {"id": "bc-5k", "name": "BC 5K", "price": 8900, "flavors": [
