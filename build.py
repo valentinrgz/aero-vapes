@@ -48,8 +48,8 @@ PRODUCTS = [
         {"name": "Sour Strawberry Dragonfruit", "stock": 0, "img": data_uri("Trio_40k_Sour_Strawberry_Dragonfruit_.jpg")},
     ]},
     {"id": "gh-23k", "name": "GH 23k", "price": 25900, "flavors": [
-        {"name": "Ice Mint", "stock": 1, "img": data_uri("GH_23k_Ice_Mint_.jpg")},
-        {"name": "Spring Mint", "stock": 1, "img": data_uri("GH_23k_Spring_Mint_.jpg")},
+        {"name": "Ice Mint", "stock": 0, "img": data_uri("GH_23k_Ice_Mint_.jpg")},
+        {"name": "Spring Mint", "stock": 0, "img": data_uri("GH_23k_Spring_Mint_.jpg")},
     ]},
     {"id": "te-30k", "name": "TE 30K", "price": 25900, "flavors": [
         {"name": "Blueberry Ice", "stock": 1, "img": data_uri("TE_30K_Blueberry_ice_.jpg")},
