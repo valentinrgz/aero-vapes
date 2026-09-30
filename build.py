@@ -29,8 +29,8 @@ def data_uri(fname):
 
 PRODUCTS = [
     {"id": "ignite-v400-vmix", "name": "IGNITE V400 V-MIX 40k", "price": 29990, "flavors": [
-        {"name": "Pineapple Ice + Passion Fruit Sour Kiwi", "stock": 1, "img": data_uri("IGNITE_V400_V_MIX_40k_Pineapple_Ice_Passion_Fruit_Sour_Kiwi_.jpg")},
-        {"name": "Grape Pop + Peach Ice", "stock": 1, "img": data_uri("IGNITE_V400_V_MIX_40k_Grape_Pop_Peach_Ice_.jpg")},
+        {"name": "Pineapple Ice + Passion Fruit Sour Kiwi", "stock": 0, "img": data_uri("IGNITE_V400_V_MIX_40k_Pineapple_Ice_Passion_Fruit_Sour_Kiwi_.jpg")},
+        {"name": "Grape Pop + Peach Ice", "stock": 0, "img": data_uri("IGNITE_V400_V_MIX_40k_Grape_Pop_Peach_Ice_.jpg")},
         {"name": "Menthol + Mighty Melon", "stock": 1, "img": data_uri("IGNITE_V400_V_MIX_40k_Menthol_Mighty_Melon_.jpg")},
     ]},
     {"id": "ignite-v80", "name": "IGNITE V80 8k", "price": 19900, "flavors": [
